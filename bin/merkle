@@ -9,10 +9,12 @@ var optimist = require('optimist')
   .describe('n', 'Prints the number of levels for the given leaves.')
   .describe('c', 'Prints the number of nodes for the given leaves.')
   .describe('hash', 'Hash algorithm to apply on leaves. Values are \'sha1\', \'md5\' or \'none\'. Defaults to \'sha1\'.')
+  .describe('all', 'Prints all levels of Merkle tree, from leaves to root.')
   .alias('l', 'level')
   .alias('c', 'count')
   .alias('n', 'nodes')
   .alias('h', 'hash')
+  .alias('a', 'all')
   .default({
     level: 0,
     hash: 'sha1'
@@ -49,7 +51,17 @@ if(argv.count){
   return;
 }
 
-if(argv.level >= 0){
+
+if(argv.all){
+  for(var i = 0; i < m.countLevels(); i++){
+    m.getLevel(i).forEach(function (val) {
+      console.log(val);
+    });
+    console.log();
+  }
+  return;
+}
+else if(argv.level >= 0){
   var values = m.getLevel(argv.level);
   if(values){
     values.forEach(function (val) {
