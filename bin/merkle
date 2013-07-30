@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+var merkle   = require('../merkle');
+var optimist = require('optimist')
+  .usage('Build a Merkle Tree and prints its values.\nUsage: $0 [leaf...]')
+  .describe('V', 'Prints version')
+  .describe('h', 'Prints help')
+  .describe('l', 'Prints values of the given level. Defaults to 0 (root).')
+  .describe('n', 'Prints the number of levels for the given leaves.')
+  .describe('c', 'Prints the number of nodes for the given leaves.')
+  .alias('l', 'level')
+  .alias('c', 'count')
+  .alias('n', 'number')
+  .alias('h', 'help')
+  .alias('V', 'version')
+  .default({
+    level: 0
+  })
+  ;
+
+var argv = optimist.argv;
+
+// Needs at least two leaves
+// if(argv._.length < 2)
+//   argv.help = true;
+
+if(argv.help){
+  console.log(optimist.help());
+  return;
+}
+
+if(argv.version){
+  console.log('0.0.1');
+  return;
+}
+
+// Parameters OK
+var m = merkle(argv._);
+if(argv.number){
+  console.log(argv._);
+  console.log(m.countLevels());
+}

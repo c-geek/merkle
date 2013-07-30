@@ -1,0 +1,41 @@
+{
+  "name": "merkle",
+  "version": "0.0.1",
+  "description": "Javascript implementation of merkle trees",
+  "main": "bin/merkle",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/*.js",
+    "start": "bin/merkle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:c-geek/merkle.git"
+  },
+  "keywords": [
+    "hash trees",
+    "cryptography"
+  ],
+  "author": "Cedric Moreau <cem.moreau@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/c-geek/merkle/issues"
+  },
+  "dependencies": {
+    "optimist": "",
+    "async": "",
+    "sha1": "",
+    "underscore": ""
+  },
+  "devDependencies": {
+    "mocha": "",
+    "should": "",
+    "supertest": ""
+  },
+  "bin": {
+    "merkle": "./bin/merkle"
+  }
+}
