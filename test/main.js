@@ -47,6 +47,51 @@ before(function(done) {
   });
 });
 
+describe("merkle(['a', 'b', 'c', 'd', 'e'], 'sha1')", function(){
+
+  var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1').process();
+
+  it("should have root '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'", function(){
+    assert.equal(tree.root(), "114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
+describe("merkle(['a', 'b', 'c', 'd', 'e'], 'md5')", function(){
+
+  var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'md5').process();
+
+  it("should have root '064705BD78652C090975702C9E02E229'", function(){
+    assert.equal(tree.root(), "064705BD78652C090975702C9E02E229");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
+describe("merkle(['a', 'b', 'c', 'd', 'e'], 'clear')", function(){
+
+  var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear').process();
+
+  it("should have root 'ABCDE'", function(){
+    assert.equal(tree.root(), "ABCDE");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
 describe('Merkle', function(){
 
   describe('of BB-AM0-OK', function(){
