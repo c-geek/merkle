@@ -2,18 +2,20 @@
 var merkle   = require('../merkle');
 var optimist = require('optimist')
   .usage('Build a Merkle Tree and prints its values.\nUsage: $0 [leaf...]')
-  .describe('V', 'Prints version')
-  .describe('h', 'Prints help')
+  .describe('version', 'Prints version')
+  .describe('help', 'Prints help')
+  .describe('l', 'Prints values of the given level. Defaults to 0 (root).')
   .describe('l', 'Prints values of the given level. Defaults to 0 (root).')
   .describe('n', 'Prints the number of levels for the given leaves.')
   .describe('c', 'Prints the number of nodes for the given leaves.')
+  .describe('hash', 'Hash algorithm to apply on leaves. Values are \'sha1\', \'md5\' or \'none\'. Defaults to \'sha1\'.')
   .alias('l', 'level')
   .alias('c', 'count')
-  .alias('n', 'number')
-  .alias('h', 'help')
-  .alias('V', 'version')
+  .alias('n', 'nodes')
+  .alias('h', 'hash')
   .default({
-    level: 0
+    level: 0,
+    hash: 'sha1'
   })
   ;
 
@@ -34,12 +36,25 @@ if(argv.version){
 }
 
 // Parameters OK
-var m = merkle(argv._);
 
-if(argv.number){
-  console.log(m.countLevels());
+var m = merkle(argv._, argv.hash).process();
+
+if(argv.nodes){
+  console.log(m.countNodes());
+  return;
 }
 
 if(argv.count){
-  console.log(m.countNodes());
+  console.log(m.countLevels());
+  return;
+}
+
+if(argv.level >= 0){
+  var values = m.getLevel(argv.level);
+  if(values){
+    values.forEach(function (val) {
+      console.log(val);
+    });
+  }
+  return;
 }

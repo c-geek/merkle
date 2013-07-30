@@ -1,4 +1,5 @@
-var sha1 = require('sha1');
+var sha1  = require('sha1');
+var md5   = require('MD5');
 var async = require('async');
 
 function Merkle(strings, hashFunc) {
@@ -28,7 +29,7 @@ function Merkle(strings, hashFunc) {
       }
       this.depth = pow;
     }
-    return this.depth;
+    return this.depth + 1;
   };
 
   this.countNodes = function () {
@@ -37,8 +38,8 @@ function Merkle(strings, hashFunc) {
   };
 
   this.process = function() {
-    var depth = this.countLevels();
-    if(this.levels.length < depth){
+    var depth = this.countLevels() - 1;
+    if(this.levels.length == 0){
       // Compute the nodes of each level
       for (var i = 0; i < depth; i++) {
         this.levels.push([]);
@@ -49,11 +50,15 @@ function Merkle(strings, hashFunc) {
         this.nodes += this.levels[j].length;
       }
     }
-    return this.getRoot();
+    return this;
   };
 
   this.getRoot = function() {
     return this.levels[0][0];
+  };
+
+  this.getLevel = function(i) {
+    return this.levels[i];
   };
 
   // PRIVATE
@@ -75,6 +80,15 @@ function Merkle(strings, hashFunc) {
   }
 }
 
-module.exports = function (strings, hashFunc) {
-  return new Merkle(strings, hashFunc || sha1);
+module.exports = function (strings, hashFuncName) {
+  var hashFunc;
+  if(hashFuncName == 'sha1'){
+    hashFunc = sha1;
+  }
+  if(hashFuncName == 'md5'){
+    hashFunc = md5;
+  }
+  return new Merkle(strings, hashFunc || function (input) {
+    return input;
+  });
 };

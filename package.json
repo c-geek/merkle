@@ -28,6 +28,7 @@
     "optimist": "",
     "async": "",
     "sha1": "",
+    "MD5": "",
     "underscore": ""
   },
   "devDependencies": {
