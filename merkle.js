@@ -5,9 +5,9 @@ var async = require('async');
 function Merkle(strings, hashFunc) {
 
   this.leaves = [];
-  this.depth = 0;
-  this.levels = [];
-  this.nodes = 0;
+  this.treeDepth = 0;
+  this.rows = [];
+  this.nodesCount = 0;
 
   // PUBLIC
   this.feed = function(anyData) {
@@ -20,45 +20,49 @@ function Merkle(strings, hashFunc) {
     return this;
   };
 
-  this.countLevels = function () {
+  this.depth = function () {
     // Compute tree depth
-    if(!this.depth){
+    if(!this.treeDepth){
       var pow = 0;
       while(Math.pow(2, pow) < this.leaves.length){
         pow++;
       }
-      this.depth = pow;
+      this.treeDepth = pow;
     }
-    return this.depth + 1;
+    return this.treeDepth;
   };
 
-  this.countNodes = function () {
+  this.levels = function () {
+    return this.depth() + 1;
+  };
+
+  this.nodes = function () {
     this.process();
-    return this.nodes;
+    return this.nodesCount;
   };
 
   this.process = function() {
-    var depth = this.countLevels() - 1;
-    if(this.levels.length == 0){
+    var depth = this.depth();
+    if(this.rows.length == 0){
       // Compute the nodes of each level
       for (var i = 0; i < depth; i++) {
-        this.levels.push([]);
+        this.rows.push([]);
       }
-      this.levels[depth] = this.leaves;
+      this.rows[depth] = this.leaves;
       for (var j = depth-1; j >= 0; j--) {
-        this.levels[j] = getNodes(this.levels[j+1]);
-        this.nodes += this.levels[j].length;
+        this.rows[j] = getNodes(this.rows[j+1]);
+        this.nodesCount += this.rows[j].length;
       }
     }
     return this;
   };
 
-  this.getRoot = function() {
-    return this.levels[0][0];
+  this.root = function() {
+    return this.rows[0][0];
   };
 
-  this.getLevel = function(i) {
-    return this.levels[i];
+  this.level = function(i) {
+    return this.rows[i];
   };
 
   // PRIVATE

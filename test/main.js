@@ -52,22 +52,22 @@ describe('Merkle', function(){
   describe('of BB-AM0-OK', function(){
 
     it('voters root should be F5ACFD67FC908D28C0CFDAD886249AC260515C90', function(){
-      assert.equal(merkleV0.getRoot(), "F5ACFD67FC908D28C0CFDAD886249AC260515C90");
+      assert.equal(merkleV0.root(), "F5ACFD67FC908D28C0CFDAD886249AC260515C90");
     });
 
     it('members root should be F5ACFD67FC908D28C0CFDAD886249AC260515C90', function(){
-      assert.equal(merkleM0.getRoot(), "F5ACFD67FC908D28C0CFDAD886249AC260515C90");
+      assert.equal(merkleM0.root(), "F5ACFD67FC908D28C0CFDAD886249AC260515C90");
     });
   });
 
   describe('of BB-AM2-OK', function(){
 
     it('voters root should be DC7A9229DFDABFB9769789B7BFAE08048BCB856F', function(){
-      assert.equal(merkleV2.getRoot(), "DC7A9229DFDABFB9769789B7BFAE08048BCB856F");
+      assert.equal(merkleV2.root(), "DC7A9229DFDABFB9769789B7BFAE08048BCB856F");
     });
 
     it('members root should be F92B6F81C85200250EE51783F5F9F6ACA57A9AFF', function(){
-      assert.equal(merkleM2.getRoot(), "F92B6F81C85200250EE51783F5F9F6ACA57A9AFF");
+      assert.equal(merkleM2.root(), "F92B6F81C85200250EE51783F5F9F6ACA57A9AFF");
     });
   });
 });

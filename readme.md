@@ -15,43 +15,43 @@ var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1');
 You can get tree root using:
 
 ```js
-> tree.getRoot();
+> tree.root();
 '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
-```
-
-Get tree number of levels:
-```js
-> tree.countLevels();
-4
 ```
 
 Get tree depth:
 
 ```js
-> tree.countLevels() - 1;
+> tree.depth();
 3
+```
+
+Get tree number of levels (depth + level of leaves):
+```js
+> tree.levels();
+4
 ```
 
 Get tree number of nodes
 
 ```js
-> tree.countNodes();
+> tree.nodes();
 6
 ```
 
 Get a tree level nodes:
 
 ```js
-> tree.getLevel(0);
+> tree.level(0);
 ['114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9']
 
-> tree.getLevel(1);
+> tree.level(1);
 [
   '585DD1B0A3A55D9A36DE747EC37524D318E2EBEE',
   '58E6B3A414A1E090DFC6029ADD0F3555CCBA127F'
 ]
 
-> tree.getLevel(2);
+> tree.level(2);
 [
   'F4D9EEA3797499E52CC2561F722F935F10365E40',
   '734F7A56211B581395CB40129D307A0717538088',
@@ -68,13 +68,13 @@ var sha1tree  = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1');
 var md5tree   = merkle(['a', 'b', 'c', 'd', 'e'], 'md5');
 var cleartree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear');
 
-> sha1tree.getRoot();
+> sha1tree.root();
 '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
 
-> md5tree.getRoot();
+> md5tree.root();
 '064705BD78652C090975702C9E02E229'
 
-> cleartree.getRoot();
+> cleartree.root();
 'ABCDE'
 ```
 

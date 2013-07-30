@@ -23,10 +23,6 @@ var optimist = require('optimist')
 
 var argv = optimist.argv;
 
-// Needs at least two leaves
-// if(argv._.length < 2)
-//   argv.help = true;
-
 if(argv.help){
   console.log(optimist.help());
   return;
@@ -42,19 +38,19 @@ if(argv.version){
 var m = merkle(argv._, argv.hash).process();
 
 if(argv.nodes){
-  console.log(m.countNodes());
+  console.log(m.nodes());
   return;
 }
 
 if(argv.count){
-  console.log(m.countLevels());
+  console.log(m.levels());
   return;
 }
 
 
 if(argv.all){
-  for(var i = 0; i < m.countLevels(); i++){
-    m.getLevel(i).forEach(function (val) {
+  for(var i = 0; i < m.levels(); i++){
+    m.level(i).forEach(function (val) {
       console.log(val);
     });
     console.log();
@@ -62,7 +58,7 @@ if(argv.all){
   return;
 }
 else if(argv.level >= 0){
-  var values = m.getLevel(argv.level);
+  var values = m.level(argv.level);
   if(values){
     values.forEach(function (val) {
       console.log(val);
