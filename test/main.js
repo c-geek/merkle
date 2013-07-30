@@ -23,8 +23,8 @@ before(function(done) {
       members0.sort();
       voters0 = members0.slice();
       // Merkle
-      merkleM0 = merkle(members0);
-      merkleV0 = merkle(voters0);
+      merkleM0 = merkle(members0, 'sha1');
+      merkleV0 = merkle(voters0, 'sha1');
       callback();
     },
     function(callback){
@@ -34,8 +34,8 @@ before(function(done) {
       voters2 = voters0.slice();
       voters2.splice(voters2.indexOf('C73882B64B7E72237A2F460CE9CAB76D19A8651E'));
       // Merkle
-      merkleM2 = merkle(members2);
-      merkleV2 = merkle(voters2);
+      merkleM2 = merkle(members2, 'sha1');
+      merkleV2 = merkle(voters2, 'sha1');
       callback();
     }
   ], function (err, result) {
