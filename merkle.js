@@ -6,6 +6,7 @@ function Merkle(strings, hashFunc) {
   this.leaves = [];
   this.depth = 0;
   this.levels = [];
+  this.nodes = 0;
 
   // PUBLIC
   this.feed = function(anyData) {
@@ -31,15 +32,8 @@ function Merkle(strings, hashFunc) {
   };
 
   this.countNodes = function () {
-    // Compute tree depth
-    if(!this.depth){
-      var pow = 0;
-      while(Math.pow(2, pow) < this.leaves.length){
-        pow++;
-      }
-      this.depth = pow;
-    }
-    return this.depth;
+    this.process();
+    return this.nodes;
   };
 
   this.process = function() {
@@ -52,6 +46,7 @@ function Merkle(strings, hashFunc) {
       this.levels[depth] = this.leaves;
       for (var j = depth-1; j >= 0; j--) {
         this.levels[j] = getNodes(this.levels[j+1]);
+        this.nodes += this.levels[j].length;
       }
     }
     return this.getRoot();

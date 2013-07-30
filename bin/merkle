@@ -35,7 +35,11 @@ if(argv.version){
 
 // Parameters OK
 var m = merkle(argv._);
+
 if(argv.number){
-  console.log(argv._);
   console.log(m.countLevels());
+}
+
+if(argv.count){
+  console.log(m.countNodes());
 }
