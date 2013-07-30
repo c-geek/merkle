@@ -8,7 +8,7 @@ Builds a Merkle tree using either sha1, md5 or clear algorithm.
 ```js
 var merkle = require('merkle');
 
-var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1');
+var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1').process();
 ```
 ### Extract tree data
 
@@ -64,9 +64,9 @@ Get a tree level nodes:
 ### Using different hash algorithms
 
 ```js
-var sha1tree  = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1');
-var md5tree   = merkle(['a', 'b', 'c', 'd', 'e'], 'md5');
-var cleartree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear');
+var sha1tree  = merkle(['a', 'b', 'c', 'd', 'e'], 'sha1').process();
+var md5tree   = merkle(['a', 'b', 'c', 'd', 'e'], 'md5').process();
+var cleartree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear').process();
 
 > sha1tree.root();
 '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
