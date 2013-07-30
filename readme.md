@@ -1,4 +1,4 @@
-# Merkle
+# Merkle [![Build Status](https://api.travis-ci.org/c-geek/merkle.png)](https://api.travis-ci.org/c-geek/merkle.png)
 
 Builds a Merkle tree using either sha1, md5 or clear algorithm.
 
