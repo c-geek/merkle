@@ -16,7 +16,7 @@ You can get tree root using:
 
 ```js
 > tree.getRoot();
-114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9
+'114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
 ```
 
 Get tree number of levels:
@@ -46,10 +46,17 @@ Get a tree level nodes:
 ['114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9']
 
 > tree.getLevel(1);
-['585DD1B0A3A55D9A36DE747EC37524D318E2EBEE', '58E6B3A414A1E090DFC6029ADD0F3555CCBA127F']
+[
+  '585DD1B0A3A55D9A36DE747EC37524D318E2EBEE',
+  '58E6B3A414A1E090DFC6029ADD0F3555CCBA127F'
+]
 
 > tree.getLevel(2);
-['F4D9EEA3797499E52CC2561F722F935F10365E40', '734F7A56211B581395CB40129D307A0717538088', '58E6B3A414A1E090DFC6029ADD0F3555CCBA127F']
+[
+  'F4D9EEA3797499E52CC2561F722F935F10365E40',
+  '734F7A56211B581395CB40129D307A0717538088',
+  '58E6B3A414A1E090DFC6029ADD0F3555CCBA127F'
+]
 
 ...
 ```
@@ -62,13 +69,13 @@ var md5tree   = merkle(['a', 'b', 'c', 'd', 'e'], 'md5');
 var cleartree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear');
 
 > sha1tree.getRoot();
-114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9
+'114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
 
 > md5tree.getRoot();
-064705BD78652C090975702C9E02E229
+'064705BD78652C090975702C9E02E229'
 
 > cleartree.getRoot();
-ABCDE
+'ABCDE'
 ```
 
 ## Concepts
@@ -89,7 +96,7 @@ Here is an example of Merkle tree with 5 leaves (taken from [Tree Hash EXchange 
 
     Note: H() is some hash function
 
-Where A,B,C,D,E *may* be already hashed data. If not, those leaves are turned into hashed data (using either sha1, md5 or clear algorithm).
+Where A,B,C,D,E *may* be already hashed data. If not, those leaves are turned into hashed data (using either *sha1*, *md5* or *clear* algorithm).
 
 With such a tree structure, merkle considers the tree has exactly 6 nodes: `[ROOT,H,E,F,G,E]`. For a given level, nodes are just an array.
 
