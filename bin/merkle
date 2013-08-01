@@ -5,11 +5,10 @@ var optimist = require('optimist')
   .describe('version', 'Prints version')
   .describe('help', 'Prints help')
   .describe('l', 'Prints values of the given level. Defaults to 0 (root).')
-  .describe('l', 'Prints values of the given level. Defaults to 0 (root).')
-  .describe('n', 'Prints the number of levels for the given leaves.')
-  .describe('c', 'Prints the number of nodes for the given leaves.')
-  .describe('hash', 'Hash algorithm to apply on leaves. Values are \'sha1\', \'md5\' or \'none\'. Defaults to \'sha1\'.')
-  .describe('all', 'Prints all levels of Merkle tree, from leaves to root.')
+  .describe('n', 'Prints the number of nodes for the given leaves.')
+  .describe('c', 'Prints the number of levels for the given leaves.')
+  .describe('h', 'Hash algorithm to apply on leaves. Values are \'sha1\', \'md5\' or \'none\'.')
+  .describe('a', 'Prints all levels of Merkle tree, from leaves to root.')
   .alias('l', 'level')
   .alias('c', 'count')
   .alias('n', 'nodes')
@@ -29,7 +28,7 @@ if(argv.help){
 }
 
 if(argv.version){
-  console.log('0.0.3');
+  console.log('0.1.0');
   return;
 }
 
