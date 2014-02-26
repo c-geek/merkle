@@ -77,9 +77,9 @@ describe("merkle(['a', 'b', 'c', 'd', 'e'], 'md5')", function(){
   });
 });
 
-describe("merkle(['a', 'b', 'c', 'd', 'e'], 'clear')", function(){
+describe("merkle(['a', 'b', 'c', 'd', 'e'], 'none')", function(){
 
-  var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'clear').process();
+  var tree = merkle(['a', 'b', 'c', 'd', 'e'], 'none').process();
 
   it("should have root 'ABCDE'", function(){
     assert.equal(tree.root(), "ABCDE");
