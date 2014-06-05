@@ -1,6 +1,5 @@
-var sha1  = require('sha1');
-var md5   = require('MD5');
-var async = require('async');
+
+var crypto = require('crypto');
 
 function Merkle(strings, hashFunc) {
 
@@ -80,19 +79,17 @@ function Merkle(strings, hashFunc) {
 
   // INIT
   for (var i = 0; i < strings.length; i++) {
-    this.feed(new String(strings[i]));
+    this.feed('' + strings[i]);
   }
 }
 
 module.exports = function (strings, hashFuncName) {
-  var hashFunc;
-  if(hashFuncName == 'sha1'){
-    hashFunc = sha1;
-  }
-  if(hashFuncName == 'md5'){
-    hashFunc = md5;
-  }
-  return new Merkle(strings, hashFunc || function (input) {
-    return input;
+  return new Merkle(strings, function (input) {
+    if (hashFuncName === 'none') {
+      return input;
+    } else {
+      var hash = crypto.createHash(hashFuncName);
+      return hash.update(input).digest('hex');
+    }
   });
 };

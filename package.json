@@ -26,10 +26,7 @@
   },
   "dependencies": {
     "optimist": "",
-    "async": "",
-    "sha1": "",
-    "MD5": "",
-    "underscore": ""
+    "async": ""
   },
   "devDependencies": {
     "mocha": "",
