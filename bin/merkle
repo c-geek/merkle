@@ -28,7 +28,7 @@ if(argv.help){
 }
 
 if(argv.version){
-  console.log('0.1.0');
+  console.log('0.2.0');
   return;
 }
 
