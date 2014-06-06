@@ -34,7 +34,7 @@ if(argv.version){
 
 // Parameters OK
 
-var m = merkle(argv._, argv.hash).process();
+var m = merkle(argv.hash).sync(argv._);
 
 if(argv.nodes){
   console.log(m.nodes());

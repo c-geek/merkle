@@ -1,70 +1,73 @@
 
 var crypto = require('crypto');
+var through = require('through');
 
-function Merkle(strings, hashFunc) {
+function Merkle (hashFunc) {
 
-  this.leaves = [];
-  this.treeDepth = 0;
-  this.rows = [];
-  this.nodesCount = 0;
+  var that = this;
 
-  // PUBLIC
-  this.feed = function(anyData) {
+  var resFunc = function () {
+    return root();
+  };
+
+  that.leaves = [];
+  that.treeDepth = 0;
+  that.rows = [];
+  that.nodesCount = 0;
+
+  function feed(anyData) {
     if(anyData && anyData.match(/^[\w\d]{40}$/)){
-      this.leaves.push(anyData.toUpperCase());
+      that.leaves.push(anyData.toUpperCase());
     }
     else{
-      this.leaves.push(hashFunc(anyData).toUpperCase());
+      that.leaves.push(hashFunc(anyData).toUpperCase());
     }
-    return this;
+    return that;
   };
 
-  this.depth = function () {
+  function depth() {
     // Compute tree depth
-    if(!this.treeDepth){
+    if(!that.treeDepth){
       var pow = 0;
-      while(Math.pow(2, pow) < this.leaves.length){
+      while(Math.pow(2, pow) < that.leaves.length){
         pow++;
       }
-      this.treeDepth = pow;
+      that.treeDepth = pow;
     }
-    return this.treeDepth;
+    return that.treeDepth;
   };
 
-  this.levels = function () {
-    return this.depth() + 1;
+  function levels() {
+    return depth() + 1;
   };
 
-  this.nodes = function () {
-    this.process();
-    return this.nodesCount;
+  function nodes() {
+    return that.nodesCount;
   };
 
-  this.process = function() {
-    var depth = this.depth();
-    if(this.rows.length == 0){
+  function root() {
+    return that.rows[0][0];
+  };
+
+  function level(i) {
+    return that.rows[i];
+  };
+
+  function compute() {
+    var theDepth = depth();
+    if(that.rows.length == 0){
       // Compute the nodes of each level
-      for (var i = 0; i < depth; i++) {
-        this.rows.push([]);
+      for (var i = 0; i < theDepth; i++) {
+        that.rows.push([]);
       }
-      this.rows[depth] = this.leaves;
-      for (var j = depth-1; j >= 0; j--) {
-        this.rows[j] = getNodes(this.rows[j+1]);
-        this.nodesCount += this.rows[j].length;
+      that.rows[theDepth] = that.leaves;
+      for (var j = theDepth-1; j >= 0; j--) {
+        that.rows[j] = getNodes(that.rows[j+1]);
+        that.nodesCount += that.rows[j].length;
       }
     }
-    return this;
   };
 
-  this.root = function() {
-    return this.rows[0][0];
-  };
-
-  this.level = function(i) {
-    return this.rows[i];
-  };
-
-  // PRIVATE
   function getNodes(leaves) {
     var remainder = leaves.length % 2;
     var nodes = [];
@@ -77,14 +80,66 @@ function Merkle(strings, hashFunc) {
     return nodes;
   }
 
-  // INIT
-  for (var i = 0; i < strings.length; i++) {
-    this.feed('' + strings[i]);
-  }
+  // PUBLIC
+
+  /**
+  * Return the stream, with resulting stream begin root hash string.
+  **/
+  var stream = through(
+    function write (data) {
+      feed('' + data);
+    },
+    function end () {
+      compute();
+      this.emit('data', resFunc());
+      this.emit('end');
+    });
+
+  /**
+  * Return the stream, but resulting stream will be json.
+  **/
+  stream.json = function () {
+    resFunc = function() {
+      return {
+        root: root,
+        level: level,
+        depth: depth,
+        levels: levels,
+        nodes: nodes
+      };
+    };
+    return this;
+  };
+
+  /**
+  * Computes merkle tree synchronously, returning json result.
+  **/
+  stream.sync = function (leaves) {
+    leaves.forEach(function(leaf){
+      feed(leaf);
+    });
+    compute();
+    stream.json();
+    return resFunc();
+  };
+
+  /**
+  * Computes merkle tree asynchronously, returning json as callback result.
+  **/
+  stream.async = function (leaves, done) {
+    leaves.forEach(function(leaf){
+      feed(leaf);
+    });
+    compute();
+    stream.json();
+    done(null, resFunc());
+  };
+
+  return stream;
 }
 
-module.exports = function (strings, hashFuncName) {
-  return new Merkle(strings, function (input) {
+module.exports = function (hashFuncName) {
+  return new Merkle(function (input) {
     if (hashFuncName === 'none') {
       return input;
     } else {

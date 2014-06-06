@@ -26,12 +26,15 @@
   },
   "dependencies": {
     "optimist": "",
-    "async": ""
+    "through": ""
   },
   "devDependencies": {
     "mocha": "",
     "should": "",
-    "supertest": ""
+    "async": "",
+    "supertest": "",
+    "event-stream": "",
+    "concat-stream": ""
   },
   "bin": {
     "merkle": "./bin/merkle"
