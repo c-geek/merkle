@@ -8,15 +8,23 @@ Builds a Merkle tree using either sha1, md5 or none algorithm.
 ```js
 var merkle = require('merkle');
 var abcde = ['a', 'b', 'c', 'd', 'e'];
+```
 
-// Sync style
+#### Sync style
+
+```js
 var tree = merkle('sha1').sync(abcde);
+```
 
-// Async style
+#### Async style
+```js
 merkle('sha1').async(abcde, function(err, tree){
   // ...
 });
+```
 
+#### Stream style
+```js
 // Stream style -- streams root hash
 var merkleStreamRoot = merkle('sha1');
 merkleStreamRoot.pipe(process.stdout);
