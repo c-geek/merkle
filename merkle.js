@@ -101,11 +101,11 @@ function Merkle (hashFunc) {
   stream.json = function () {
     resFunc = function() {
       return {
-        root: root,
-        level: level,
-        depth: depth,
-        levels: levels,
-        nodes: nodes
+        root: root(),
+        level: level(),
+        depth: depth(),
+        levels: levels(),
+        nodes: nodes()
       };
     };
     return this;

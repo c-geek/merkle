@@ -30,15 +30,21 @@ var merkleStreamRoot = merkle('sha1');
 merkleStreamRoot.pipe(process.stdout);
 
 // Stream style -- streams json tree
+var es = require('event-stream');
 var merkleStreamJson = merkle('sha1').json();
-merkleStreamJson.pipe(process.stdout);
+merkleStreamJson
+  .pipe(es.stringify())
+  .pipe(process.stdout);
 
 abcde.forEach(function(letter){
-  merkleStreamRoot.write(letter);
-  merkleStreamJson.write(letter);
+    merkleStreamJson.write(letter);
 });
-merkleStreamRoot.end();
+
 merkleStreamJson.end();
+
+// out:
+// {"root":"114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9","depth":3,"levels":4,"nodes":6}
+
 ```
 
 ### Extract tree data
