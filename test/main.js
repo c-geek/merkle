@@ -95,13 +95,13 @@ describe("merkle stream.json() ['a', 'b', 'c', 'd', 'e'] with 'sha1')", function
   });
 
   it("should have root '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'", function(){
-    assert.equal(tree.root(), "114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9");
+    assert.equal(tree.root, "114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9");
   });
 
   it('should have depth 3, levels 4, nodes 6', function(){
-    assert.equal(tree.depth(), 3);
-    assert.equal(tree.levels(), 4);
-    assert.equal(tree.nodes(), 6);
+    assert.equal(tree.depth, 3);
+    assert.equal(tree.levels, 4);
+    assert.equal(tree.nodes, 6);
   });
 });
 

@@ -119,7 +119,15 @@ function Merkle (hashFunc) {
       feed(leaf);
     });
     compute();
-    stream.json();
+    resFunc = function() {
+      return {
+        root: root,
+        level: level,
+        depth: depth,
+        levels: levels,
+        nodes: nodes
+      };
+    };
     return resFunc();
   };
 
@@ -131,7 +139,15 @@ function Merkle (hashFunc) {
       feed(leaf);
     });
     compute();
-    stream.json();
+    resFunc = function() {
+      return {
+        root: root,
+        level: level,
+        depth: depth,
+        levels: levels,
+        nodes: nodes
+      };
+    };
     done(null, resFunc());
   };
 
