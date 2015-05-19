@@ -29,6 +29,28 @@ describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'sha1')", function(){
   });
 });
 
+describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'sha256')", function(){
+
+  var root = null;
+
+  before(function (done) {
+    var m = merkle('sha256');
+    m.pipe(es.mapSync(function (data) {
+      root = data;
+      done();
+    }));
+    
+    abcde.forEach(function(c){
+      m.write(c);
+    });
+    m.end();
+  });
+
+  it("should have root '16E6BEB3E080910740A2923D6091618CAA9968AEAD8A52D187D725D199548E2C'", function(){
+    assert.equal(root, "16E6BEB3E080910740A2923D6091618CAA9968AEAD8A52D187D725D199548E2C");
+  });
+});
+
 describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'md5')", function(){
 
   var root = null;
