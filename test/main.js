@@ -157,12 +157,71 @@ describe("merkle('none').async(['a', 'b', 'c', 'd', 'e'])", function(){
     });
   });
 
-  it("tree shoulnt be null", function(){
+  it("tree shouldn't be null", function(){
     should.exist(tree);
   });
 
   it("should have root 'ABCDE'", function(){
     assert.equal(tree.root(), "ABCDE");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
+
+describe("merkle('sha512').async(['a', 'b', 'c', 'd', 'e'])", function(){
+
+  var tree = merkle('sha512').sync(abcde);
+
+  it("tree shoulnt be null", function(){
+    should.exist(tree);
+  });
+
+  it("should have root '0F1DDB0F6F807FC6E00948C4DCD9035F83C2CD737F24BCEA278763DF60D90EFE4D7D126F42763A77FBDF520879B0D4A4699CD6AD36A839CF495E32AE35F8E5B7'", function(){
+    assert.equal(tree.root(), "0F1DDB0F6F807FC6E00948C4DCD9035F83C2CD737F24BCEA278763DF60D90EFE4D7D126F42763A77FBDF520879B0D4A4699CD6AD36A839CF495E32AE35F8E5B7");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
+
+describe("merkle('ripemd160').async(['a', 'b', 'c', 'd', 'e'])", function(){
+
+  var tree = merkle('ripemd160').sync(abcde);
+
+  it("tree shoulnt be null", function(){
+    should.exist(tree);
+  });
+
+  it("should have root 'A915A61779C0EB390447CE88A989041D625756C6'", function(){
+    assert.equal(tree.root(), "A915A61779C0EB390447CE88A989041D625756C6");
+  });
+
+  it('should have depth 3, levels 4, nodes 6', function(){
+    assert.equal(tree.depth(), 3);
+    assert.equal(tree.levels(), 4);
+    assert.equal(tree.nodes(), 6);
+  });
+});
+
+describe("merkle('whirlpool').async(['a', 'b', 'c', 'd', 'e'])", function(){
+
+  var tree = merkle('whirlpool').sync(abcde);
+
+  it("tree shoulnt be null", function(){
+    should.exist(tree);
+  });
+
+  it("should have root '57D1AB5281015F92DA7D3EAF740B643F5861565A03A4FC82126F21F69FD3C566FB0A1EA04F572E90FAE7C7AF4984CAE146DBA4618F4D1463A746822D4E21E5EB", function(){
+    assert.equal(tree.root(), "57D1AB5281015F92DA7D3EAF740B643F5861565A03A4FC82126F21F69FD3C566FB0A1EA04F572E90FAE7C7AF4984CAE146DBA4618F4D1463A746822D4E21E5EB");
   });
 
   it('should have depth 3, levels 4, nodes 6', function(){

@@ -1,6 +1,6 @@
 # Merkle [![Build Status](https://api.travis-ci.org/c-geek/merkle.png)](https://travis-ci.org/c-geek/merkle) [![NPM version](https://badge.fury.io/js/merkle.svg)](http://badge.fury.io/js/merkle) [![Licence](http://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/c-geek/merkle/blob/master/LICENSE)
 
-Builds a Merkle tree using either sha1, md5 or none algorithm.
+Builds a Merkle tree using either sha512, sha256, ripemd160, whirlpool, sha1, md5 or none algorithms.
 
 ## Usage
 
@@ -101,9 +101,13 @@ Get a tree level nodes:
 ### Using different hash algorithms
 
 ```js
+var sha256tree= merkle('sha256').sync(abcde);
 var sha1tree  = merkle('sha1').sync(abcde);
 var md5tree   = merkle('md5').sync(abcde);
 var cleartree = merkle('none').sync(abcde);
+
+> sha256tree.root();
+'16E6BEB3E080910740A2923D6091618CAA9968AEAD8A52D187D725D199548E2C'
 
 > sha1tree.root();
 '114B6E61CB5BB93D862CA3C1DFA8B99E313E66E9'
@@ -117,7 +121,7 @@ var cleartree = merkle('none').sync(abcde);
 
 ### Install globally for merkle command
 
-Installing it globally will introduce the `merkle` command:
+Installing it globally will introduce the `merkle` command (using sha1 as default):
 
 ```bash
 $ sudo npm install -g merkle
