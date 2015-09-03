@@ -7,7 +7,7 @@ var es     = require('event-stream');
 
 //data available for tests
 var abc = ['a', 'b', 'c'];
-var abcNull = ['a', 'b', 'c', ''];
+var abcEmpty = ['a', 'b', 'c', ''];
 var abcc = ['a', 'b', 'c', 'c'];
 var abcde = ['a', 'b', 'c', 'd', 'e'];
 
@@ -258,7 +258,7 @@ describe("test vulnerbility of redundant leaves in tree construction using ['a',
 describe("test vulnerbility of redundant leaves in tree construction using ['a', 'b', 'c'] vs ['a', 'b', 'c', '' ]", function(){
 
   var treeAbc = merkle('sha256').sync(abc);
-  var treeAbcEmpty = merkle('sha256').sync(abcNull);
+  var treeAbcEmpty = merkle('sha256').sync(abcEmpty);
 
 
   it("tree shoulnt be null", function(){
