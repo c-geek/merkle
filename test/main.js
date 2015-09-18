@@ -5,6 +5,10 @@ var async  = require('async');
 var merkle = require('../merkle');
 var es     = require('event-stream');
 
+//data available for tests
+var abc = ['a', 'b', 'c'];
+var abcEmpty = ['a', 'b', 'c', ''];
+var abcc = ['a', 'b', 'c', 'c'];
 var abcde = ['a', 'b', 'c', 'd', 'e'];
 
 describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'sha1')", function(){
@@ -229,4 +233,41 @@ describe("merkle('whirlpool').async(['a', 'b', 'c', 'd', 'e'])", function(){
     assert.equal(tree.levels(), 4);
     assert.equal(tree.nodes(), 6);
   });
+});
+
+
+// tests for merkle tree construction vulnerbility https://bitcointalk.org/?topic=102395
+describe("test vulnerbility of redundant leaves in tree construction using ['a', 'b', 'c'] vs ['a', 'b', 'c', 'c']", function(){
+
+  var treeAbc = merkle('sha256').sync(abc);
+  var treeAbcc = merkle('sha256').sync(abcc);
+
+  it("tree shoulnt be null", function(){
+    should.exist(treeAbc);
+    should.exist(treeAbcc);
+  });
+
+  it("should assert non equality in merkle tree roots of ['a', 'b', 'c'] vs ['a', 'b', 'c', 'c']", function(){
+    assert.notEqual(treeAbc.root(), treeAbcc.root());
+  });
+
+});
+
+
+// tests for merkle tree construction vulnerbility https://github.com/chainpoint/chainpoint/issues/8
+describe("test vulnerbility of redundant leaves in tree construction using ['a', 'b', 'c'] vs ['a', 'b', 'c', '' ]", function(){
+
+  var treeAbc = merkle('sha256').sync(abc);
+  var treeAbcEmpty = merkle('sha256').sync(abcEmpty);
+
+
+  it("tree shoulnt be null", function(){
+    should.exist(treeAbc);
+    should.exist(treeAbcEmpty);
+  });
+
+  it("should assert non equality in merkle tree roots of ['a', 'b', 'c'] vs ['a', 'b', 'c', '' ]", function(){
+    assert.notEqual(treeAbc.root(), treeAbcEmpty.root());
+  });
+
 });
