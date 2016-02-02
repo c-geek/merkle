@@ -2,7 +2,17 @@
 var crypto = require('crypto');
 var through = require('through');
 
-function Merkle (hashFunc) {
+var REGEXP = {
+  'md5':       /^[0-9a-f]{32}$/i,
+  'sha1':      /^[0-9a-f]{40}$/i,
+  'ripemd160': /^[0-9a-f]{40}$/i,
+  'sha256':    /^[0-9a-f]{64}$/i,
+  'sha512':    /^[0-9a-f]{128}$/i,
+  'whirlpool': /^[0-9a-f]{128}$/i,
+  'DEFAULT':   /^$/
+};
+
+function Merkle (hashFunc, hashFuncName) {
 
   var that = this;
 
@@ -10,20 +20,22 @@ function Merkle (hashFunc) {
     return root();
   };
 
+  that.hashResultRegexp = REGEXP[hashFuncName] || REGEXP.DEFAULT;
   that.leaves = [];
   that.treeDepth = 0;
   that.rows = [];
   that.nodesCount = 0;
 
   function feed(anyData) {
-    if(anyData && anyData.match(/^[\w\d]{40}$/)){
+    if(anyData && anyData.match(that.hashResultRegexp)){
+      // Push leaf without hashing it since it is already a hash
       that.leaves.push(anyData.toUpperCase());
     }
     else{
       that.leaves.push(hashFunc(anyData).toUpperCase());
     }
     return that;
-  };
+  }
 
   function depth() {
     // Compute tree depth
@@ -162,5 +174,5 @@ module.exports = function (hashFuncName) {
       var hash = crypto.createHash(hashFuncName);
       return hash.update(input).digest('hex');
     }
-  });
+  }, hashFuncName);
 };
