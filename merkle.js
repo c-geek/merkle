@@ -47,23 +47,23 @@ function Merkle (hashFunc, hashFuncName) {
       that.treeDepth = pow;
     }
     return that.treeDepth;
-  };
+  }
 
   function levels() {
     return depth() + 1;
-  };
+  }
 
   function nodes() {
     return that.nodesCount;
-  };
+  }
 
   function root() {
     return that.rows[0][0];
-  };
+  }
 
   function level(i) {
     return that.rows[i];
-  };
+  }
 
   function compute() {
     var theDepth = depth();
@@ -78,7 +78,7 @@ function Merkle (hashFunc, hashFuncName) {
         that.nodesCount += that.rows[j].length;
       }
     }
-  };
+  }
 
   function getNodes(leaves) {
     var remainder = leaves.length % 2;
