@@ -47,6 +47,19 @@ merkleStreamJson.end();
 
 ```
 
+### Working ONLY with lowercase
+
+For historical reasons, hashes were systematically uppercased which could lead to wrong trees (see issue [#8](https://github.com/c-geek/merkle/issues/8)).
+
+We've added an extra parameter to avoid this case alteration, so you can work exclusively with lowercase hashes:
+
+```
+var use_uppercase = false;
+merkle('sha256', use_uppercase);
+```
+
+> We plan to remove this syntax for v1.0.0 and always use lowercase hashes.
+
 ### Extract tree data
 
 You can get tree root using:
