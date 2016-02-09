@@ -3,16 +3,16 @@ var crypto = require('crypto');
 var through = require('through');
 
 var REGEXP = {
-  'md5':       /^[0-9a-f]{32}$/i,
-  'sha1':      /^[0-9a-f]{40}$/i,
-  'ripemd160': /^[0-9a-f]{40}$/i,
-  'sha256':    /^[0-9a-f]{64}$/i,
-  'sha512':    /^[0-9a-f]{128}$/i,
-  'whirlpool': /^[0-9a-f]{128}$/i,
-  'DEFAULT':   /^$/
+  'md5':       "^[0-9a-f]{32}$",
+  'sha1':      "^[0-9a-f]{40}$",
+  'ripemd160': "^[0-9a-f]{40}$",
+  'sha256':    "^[0-9a-f]{64}$",
+  'sha512':    "^[0-9a-f]{128}$",
+  'whirlpool': "^[0-9a-f]{128}$",
+  'DEFAULT':   "^$"
 };
 
-function Merkle (hashFunc, hashFuncName) {
+function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
 
   var that = this;
 
@@ -20,7 +20,12 @@ function Merkle (hashFunc, hashFuncName) {
     return root();
   };
 
-  that.hashResultRegexp = REGEXP[hashFuncName] || REGEXP.DEFAULT;
+  var regexpStr = REGEXP[hashFuncName] || REGEXP.DEFAULT;
+  if (useUpperCaseForHash) {
+    // Use only capital letters if upper case is enabled
+    regexpStr = regexpStr.replace('a', 'A').replace('f', 'F');
+  }
+  that.hashResultRegexp = new RegExp(regexpStr);
   that.leaves = [];
   that.treeDepth = 0;
   that.rows = [];
@@ -29,10 +34,14 @@ function Merkle (hashFunc, hashFuncName) {
   function feed(anyData) {
     if(anyData && anyData.match(that.hashResultRegexp)){
       // Push leaf without hashing it since it is already a hash
-      that.leaves.push(anyData.toUpperCase());
+      that.leaves.push(anyData);
     }
     else{
-      that.leaves.push(hashFunc(anyData).toUpperCase());
+      var hash = hashFunc(anyData);
+      if (useUpperCaseForHash) {
+        hash = hash.toUpperCase();
+      }
+      that.leaves.push(hash);
     }
     return that;
   }
@@ -83,8 +92,13 @@ function Merkle (hashFunc, hashFuncName) {
   function getNodes(leaves) {
     var remainder = leaves.length % 2;
     var nodes = [];
+    var hash;
     for (var i = 0; i < leaves.length - 1; i = i + 2) {
-      nodes[i/2] = hashFunc(leaves[i] + leaves[i+1]).toUpperCase();
+      hash = hashFunc(leaves[i] + leaves[i+1]);
+      if (useUpperCaseForHash) {
+        hash = hash.toUpperCase();
+      }
+      nodes[i/2] = hash;
     }
     if(remainder === 1){
       nodes[((leaves.length-remainder)/2)] = leaves[leaves.length - 1];
@@ -166,7 +180,7 @@ function Merkle (hashFunc, hashFuncName) {
   return stream;
 }
 
-module.exports = function (hashFuncName) {
+module.exports = function (hashFuncName, useUpperCaseForHash) {
   return new Merkle(function (input) {
     if (hashFuncName === 'none') {
       return input;
@@ -174,5 +188,8 @@ module.exports = function (hashFuncName) {
       var hash = crypto.createHash(hashFuncName);
       return hash.update(input).digest('hex');
     }
-  }, hashFuncName);
+  }, hashFuncName,
+
+  // Use upper case y default
+  useUpperCaseForHash !== false);
 };

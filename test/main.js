@@ -328,3 +328,52 @@ describe("test already hashed leaves", function(){
     });
   });
 });
+
+describe('using lowercase', function() {
+
+  var USE_LOWERCASE = false; // This is a constant, false value is coherent with the name
+
+  describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'md5')", function(){
+
+    var root = null;
+
+    before(function (done) {
+      var m = merkle('md5', USE_LOWERCASE);
+      m.pipe(es.mapSync(function (data) {
+        root = data;
+        done();
+      }));
+
+      abcde.forEach(function(c){
+        m.write(c);
+      });
+      m.end();
+    });
+
+    it("should have root '14bb879020adb0cd3bf3935576f58f25'", function(){
+      assert.equal(root, "14bb879020adb0cd3bf3935576f58f25");
+    });
+  });
+
+  describe("merkle stream ['a', 'b', 'c', 'd', 'e'] with 'none')", function(){
+
+    var root = null;
+
+    before(function (done) {
+      var m = merkle('none', USE_LOWERCASE);
+      m.pipe(es.mapSync(function (data) {
+        root = data;
+        done();
+      }));
+
+      abcde.forEach(function(c){
+        m.write(c);
+      });
+      m.end();
+    });
+
+    it("should have root 'abcde'", function(){
+      assert.equal(root, "abcde");
+    });
+  });
+});

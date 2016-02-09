@@ -9,6 +9,7 @@ var optimist = require('optimist')
   .describe('c', 'Prints the number of levels for the given leaves.')
   .describe('h', 'Hash algorithm to apply on leaves. Values are \'sha1\', \'md5\' or \'none\'.')
   .describe('a', 'Prints all levels of Merkle tree, from leaves to root.')
+  .describe('lowercase', 'Build trees using lowercase for hashes.')
   .alias('l', 'level')
   .alias('c', 'count')
   .alias('n', 'nodes')
@@ -34,7 +35,7 @@ if(argv.version){
 
 // Parameters OK
 
-var m = merkle(argv.hash).sync(argv._);
+var m = merkle(argv.hash, !argv.lowercase).sync(argv._);
 
 if(argv.nodes){
   console.log(m.nodes());
