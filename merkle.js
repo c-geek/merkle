@@ -32,12 +32,13 @@ function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
   that.nodesCount = 0;
 
   function feed(anyData) {
-    if(anyData && anyData.match(that.hashResultRegexp)){
+    var data = String(anyData);
+    if(data && data.match(that.hashResultRegexp)){
       // Push leaf without hashing it since it is already a hash
-      that.leaves.push(anyData);
+      that.leaves.push(data);
     }
     else{
-      var hash = hashFunc(anyData);
+      var hash = hashFunc(data);
       if (useUpperCaseForHash) {
         hash = hash.toUpperCase();
       }
