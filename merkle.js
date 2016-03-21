@@ -106,6 +106,46 @@ function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
     }
     return nodes;
   }
+  
+  function getProofPath(index, excludeParent) {
+    var proofPath = [];
+
+    for (var currentLevel = depth(); currentLevel > 0; currentLevel--) {
+      var currentLevelNodes = level(currentLevel);
+      var currentLevelCount = currentLevelNodes.length;
+
+      // if this is an odd end node to be promoted up, skip to avoid proofs with null values
+      if (index == currentLevelCount - 1 && currentLevelCount % 2 == 1) {
+        index = Math.floor(index / 2);
+        continue;
+      }
+
+      var nodes = {};
+      if (index % 2) { // the index is the right node
+        nodes.left = currentLevelNodes[index - 1];
+        nodes.right = currentLevelNodes[index];
+      } else {
+        nodes.left = currentLevelNodes[index];
+        nodes.right = currentLevelNodes[index + 1];
+      }
+
+      index = Math.floor(index / 2); // set index to the parent index
+      if (!excludeParent) {
+        proofPath.push({
+          parent: level(currentLevel - 1)[index],
+          left: nodes.left,
+          right: nodes.right
+        });
+      } else {
+        proofPath.push({
+          left: nodes.left,
+          right: nodes.right
+        });
+      }
+
+    }
+    return proofPath;
+  }
 
   // PUBLIC
 
@@ -132,7 +172,8 @@ function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
         level: level(),
         depth: depth(),
         levels: levels(),
-        nodes: nodes()
+        nodes: nodes(),
+        getProofPath: getProofPath
       };
     };
     return this;
@@ -152,7 +193,8 @@ function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
         level: level,
         depth: depth,
         levels: levels,
-        nodes: nodes
+        nodes: nodes,
+        getProofPath: getProofPath
       };
     };
     return resFunc();
@@ -172,7 +214,8 @@ function Merkle (hashFunc, hashFuncName, useUpperCaseForHash) {
         level: level,
         depth: depth,
         levels: levels,
-        nodes: nodes
+        nodes: nodes,
+        getProofPath: getProofPath
       };
     };
     done(null, resFunc());
