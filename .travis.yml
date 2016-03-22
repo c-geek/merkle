@@ -1,4 +1,12 @@
 language: node_js
 services: mongodb
 node_js:
-  - 0.10
+- 0.1
+deploy:
+  provider: npm
+  email: cem.moreau@gmail.com
+  on:
+    repo: c-geek/merkle
+    tags: true
+  api_key:
+    secure: WyEdevTz1+pYzCwEGbmiPmH8nQLH2VIj7NpyWfLyIi7HMPf8G/VMz2eiRts34j/WcG7Gzft0nh/ms1EuZQv4AVc0Ms7ogbCd1JLyLnDpKpSLGQDafnixRNeoLrd0YnLU50z4vcUrebqxzBI254+/W5mCMgnaht8UZHto4XvhbEI=
